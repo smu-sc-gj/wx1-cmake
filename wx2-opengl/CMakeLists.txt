@@ -33,14 +33,20 @@ FetchContent_Declare(
     OVERRIDE_FIND_PACKAGE TRUE
 )
 
-if(NOT GLEW_POPULATED)
-    FetchContent_MakeAvailable(GLEW)
+FetchContent_GetProperties(GLEW)
+if(NOT glew_POPULATED)
+    FetchContent_MakeAvailable(GLEW)   
+ 
 endif()
 
 if(NOT wxWidgets_POPULATED)
     FetchContent_MakeAvailable(wxWidgets)
 endif()
  
+message(STATUS "GLEW_SOURCE_DIR: ${GLEW_SOURCE_DIR}")
+message(STATUS "GLEW_BINARY_DIR: ${GLEW_BINARY_DIR}")
+message(STATUS "GLEW_INCLUDE_DIRS: ${GLEW_INCLUDE_DIRS}")
+message(STATUS "GLEW_LIBRARIES: ${GLEW_LIBRARIES}")
 
 file(GLOB GAME_FILES *.cpp)
 
@@ -59,7 +65,8 @@ target_link_libraries(${APP} LINK_PUBLIC wx::net wx::core wx::base)
 
 
 # Link glew
-target_link_libraries(${APP} LINK_PUBLIC GLEW::GLEW)
+target_include_directories(${APP} PUBLIC ${GLEW_SOURCE_DIR}/include)
+target_link_libraries(${APP} LINK_PUBLIC glew_static)
 
 # Link our libraries
 # target_link_libraries (${APP} LINK_PUBLIC strings)
