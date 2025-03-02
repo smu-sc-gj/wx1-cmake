@@ -1,0 +1,3 @@
+/home/gljenkins/Development/wx1-cmake/build/_deps/wxwidgets-subbuild/CMakeFiles/wxwidgets-populate.dir
+/home/gljenkins/Development/wx1-cmake/build/_deps/wxwidgets-subbuild/CMakeFiles/edit_cache.dir
+/home/gljenkins/Development/wx1-cmake/build/_deps/wxwidgets-subbuild/CMakeFiles/rebuild_cache.dir
