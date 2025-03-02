@@ -1,7 +1,7 @@
 # CMake Lists (auto xwWidgets). 
 
 # This names our executable (and for VS our project). 
-set(APP wx1) 
+set(APP wx1-opengl) 
 
 #-------------------
 # Configure wxWidgets
@@ -22,11 +22,23 @@ FetchContent_Declare(
     OVERRIDE_FIND_PACKAGE TRUE
 )
 
-# FetchContent_MakeAvailable(wxWidgets)
- 
+set(ONLY_LIBS OFF CACHE BOOL "Build libs only" FORCE)
+
+FetchContent_Declare(
+    GLEW
+    GIT_REPOSITORY https://github.com/Perlmint/glew-cmake
+    GIT_TAG glew-cmake-2.2.0
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+    OVERRIDE_FIND_PACKAGE TRUE
+)
+
+if(NOT GLEW_POPULATED)
+    FetchContent_MakeAvailable(GLEW)
+endif()
+
 if(NOT wxWidgets_POPULATED)
     FetchContent_MakeAvailable(wxWidgets)
-    #add_subdirectory(${wxwidgets_SOURCE_DIR} ${wxwidgets_BUILD_DIR})
 endif()
  
 
@@ -44,6 +56,10 @@ ENDIF()
 
 # Link wxWidgets
 target_link_libraries(${APP} LINK_PUBLIC wx::net wx::core wx::base)
+
+
+# Link glew
+target_link_libraries(${APP} LINK_PUBLIC GLEW::GLEW)
 
 # Link our libraries
 # target_link_libraries (${APP} LINK_PUBLIC strings)

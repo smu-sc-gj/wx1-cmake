@@ -57,7 +57,10 @@ find_package(Threads REQUIRED)
 # cause another cmake executable to run. The same process will walk through
 # the project's entire directory structure.
 
-# replace with a fast off the shelf maths lib
+# Paul seems to have made these in order
+# I'll try and follow that. 
 add_subdirectory(wx1)
+
+add_subdirectory(wx2-opengl)
 
 message(STATUS "Top Leve - Cmake is Done!")
