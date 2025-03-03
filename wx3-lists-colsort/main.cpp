@@ -1,6 +1,7 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include <unordered_set>
+#include <memory>
 
 
 using namespace std;
