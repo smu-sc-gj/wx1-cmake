@@ -10,10 +10,12 @@ set(APP wx1-opengl)
 include(FetchContent)
 
 
-set(ONLY_LIBS OFF CACHE BOOL "Build libs only" FORCE)
+set(ONLY_LIBS NO CACHE BOOL "Build libs only" FORCE)
+set(glew-cmake_BUILD_STATIC YES CACHE BOOL "Build the static glew library" FORCE)
+set(glew-cmake_BUILD_SHARED NO CACHE BOOL "Build the shared glew library" FORCE)
 
 FetchContent_Declare(
-    GLEW
+    glew
     GIT_REPOSITORY https://github.com/Perlmint/glew-cmake
     GIT_TAG glew-cmake-2.2.0
     GIT_SHALLOW TRUE
@@ -21,10 +23,11 @@ FetchContent_Declare(
     OVERRIDE_FIND_PACKAGE TRUE
 )
 
-
+FetchContent_GetProperties(glew)
 if(NOT glew_POPULATED)
-    FetchContent_MakeAvailable(GLEW)   
-    FetchContent_GetProperties(GLEW)
+    # FetchContent_MakeAvailable(glew)   
+    FetchContent_Populate(glew)
+    add_subdirectory(${glew_SOURCE_DIR} ${glew_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
 message(STATUS "GLEW_SOURCE_DIR: ${GLEW_SOURCE_DIR}")
@@ -39,7 +42,7 @@ set(wxBUILD_SHARED OFF CACHE STRING "Build shared or static libraries" FORCE)
 FetchContent_Declare(
     wxWidgets
     GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets
-    GIT_TAG v3.2.5
+    GIT_TAG v3.2.6
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
     OVERRIDE_FIND_PACKAGE TRUE
@@ -80,13 +83,9 @@ ELSE()
 ENDIF()
 
 # Make sure dependent projects are compiled first!
-
-add_dependencies(${APP} wx::base)
-add_dependencies(${APP} libglew_static)
-
 # add_dependencies(${APP} strings) # my target(s)
  
-add_dependencies(${APP} wx::core wx::base)
+add_dependencies(${APP} wx::core wx::base wx::gl)
 add_dependencies(${APP} libglew_static)
 
 # Link glew
@@ -109,4 +108,4 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/Resources
 	CONFIGURATIONS Release RelWithDebInfo Debug
 	DESTINATION ./) 
 
-message(STATUS "Wx1 - DONE!")
+message(STATUS "Wx2 - DONE!")
