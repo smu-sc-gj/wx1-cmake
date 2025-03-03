@@ -26,7 +26,7 @@ FetchContent_Declare(
  
 if(NOT wxWidgets_POPULATED)
     FetchContent_MakeAvailable(wxWidgets)
-    #add_subdirectory(${wxwidgets_SOURCE_DIR} ${wxwidgets_BUILD_DIR})
+   # add_subdirectory(${wxwidgets_SOURCE_DIR} ${wxwidgets_BUILD_DIR})
 endif()
  
 

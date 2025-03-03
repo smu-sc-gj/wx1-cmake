@@ -1,4 +1,4 @@
-#include <glew.h>
+#include <GL/glew.h>
 
 #include <wx/wx.h>
 #include <wx/valgen.h>
@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#pragma comment(lib, "glew32s.lib")
+//#pragma comment(lib, "glew32s.lib")
 
 using namespace std;
 

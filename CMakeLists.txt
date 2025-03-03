@@ -49,7 +49,7 @@ if(MSVC)
 endif()
 
 #-------------------
-# Configure Threads 
+# Configure Threads  
 #-------------------
 find_package(Threads REQUIRED)
 

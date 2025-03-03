@@ -22,10 +22,12 @@ FetchContent_Declare(
     OVERRIDE_FIND_PACKAGE TRUE
 )
 
-set(ONLY_LIBS OFF CACHE BOOL "Build libs only" FORCE)
+set(ONLY_LIBS NO CACHE BOOL "Build libs only" FORCE)
+set(glew-cmake_BUILD_STATIC YES CACHE BOOL "Build the static glew library" FORCE)
+set(glew-cmake_BUILD_SHARED NO CACHE BOOL "Build the shared glew library" FORCE)
 
 FetchContent_Declare(
-    GLEW
+    glew
     GIT_REPOSITORY https://github.com/Perlmint/glew-cmake
     GIT_TAG glew-cmake-2.2.0
     GIT_SHALLOW TRUE
@@ -33,10 +35,11 @@ FetchContent_Declare(
     OVERRIDE_FIND_PACKAGE TRUE
 )
 
-FetchContent_GetProperties(GLEW)
+FetchContent_GetProperties(glew)
 if(NOT glew_POPULATED)
-    FetchContent_MakeAvailable(GLEW)   
- 
+    # FetchContent_MakeAvailable(glew)   
+    FetchContent_Populate(glew)
+    add_subdirectory(${glew_SOURCE_DIR} ${glew_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
 if(NOT wxWidgets_POPULATED)
@@ -59,14 +62,18 @@ ENDIF()
 # Make sure dependent projects are compiled first!
 # add_dependencies(${APP} strings) # my target(s)
  
+#add_dependencies(${APP} wx::core)
+#add_dependencies(${APP} libglew_static)
 
-# Link wxWidgets
-target_link_libraries(${APP} LINK_PUBLIC wx::net wx::core wx::base)
+
 
 
 # Link glew
-target_include_directories(${APP} PUBLIC ${GLEW_SOURCE_DIR}/include)
-target_link_libraries(${APP} LINK_PUBLIC glew_static)
+# target_include_directories(${APP} PUBLIC ${GLEW_SOURCE_DIR}/include)
+target_link_libraries(${APP} LINK_PUBLIC libglew_static)
+
+# Link wxWidgets
+target_link_libraries(${APP} LINK_PUBLIC wx::gl wx::core wx::base)
 
 # Link our libraries
 # target_link_libraries (${APP} LINK_PUBLIC strings)
