@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#pragma comment(lib, "glew32s.lib")
+//#pragma comment(lib, "glew32s.lib")
 
 using namespace std;
 
