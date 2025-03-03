@@ -24,7 +24,7 @@ FetchContent_Declare(
 
 # FetchContent_MakeAvailable(wxWidgets)
  
-if(NOT wxWidgets_POPULATED)
+if(NOT wxwidgets_POPULATED)
     FetchContent_MakeAvailable(wxWidgets)
     #add_subdirectory(${wxwidgets_SOURCE_DIR} ${wxwidgets_BUILD_DIR})
 endif()
@@ -41,6 +41,7 @@ ENDIF()
 # Make sure dependent projects are compiled first!
 # add_dependencies(${APP} strings) # my target(s)
  
+add_dependencies(${APP} wx::base)
 
 # Link wxWidgets
 target_link_libraries(${APP} LINK_PUBLIC wx::net wx::core wx::base)
