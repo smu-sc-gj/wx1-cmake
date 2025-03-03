@@ -62,11 +62,8 @@ ENDIF()
 # Make sure dependent projects are compiled first!
 # add_dependencies(${APP} strings) # my target(s)
  
-#add_dependencies(${APP} wx::core)
-#add_dependencies(${APP} libglew_static)
-
-
-
+add_dependencies(${APP} wx::core wx::base)
+add_dependencies(${APP} libglew_static)
 
 # Link glew
 # target_include_directories(${APP} PUBLIC ${GLEW_SOURCE_DIR}/include)
