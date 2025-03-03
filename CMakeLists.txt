@@ -2,7 +2,7 @@
 
 cmake_minimum_required (VERSION 3.6.0)
  
-set(PROJECT_NAME_STR OgreSceneLoader)
+set(PROJECT_NAME_STR WxWidgetsAndGlew)
 project(${PROJECT_NAME_STR} C CXX)
 
 #------------------------------
@@ -63,4 +63,12 @@ add_subdirectory(wx1)
 
 add_subdirectory(wx2-opengl)
 
-message(STATUS "Top Leve - Cmake is Done!")
+add_subdirectory(wx2-opengl-scribble2)
+
+add_subdirectory(wx3-lists)
+
+add_subdirectory(wx3-lists-colsort) 
+
+add_subdirectory(wx3-virtual-lists) 
+
+message(STATUS "Top Level - Cmake is Done!")

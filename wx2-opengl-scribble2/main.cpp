@@ -1,9 +1,9 @@
-#define GLEW_STATIC 1
-#pragma comment(lib, "glew\\lib\\Release\\x64\\glew32s.lib") // static lib not dll!
+//#define GLEW_STATIC 1
+//#pragma comment(lib, "glew\\lib\\Release\\x64\\glew32s.lib") // static lib not dll!
 
 // linker args: /SUBSYSTEM:WINDOWS
 
-#include "glew\include\GL\glew.h"
+#include "GL\glew.h"
 
 #include <wx/wx.h>
 #include <wx/valgen.h>

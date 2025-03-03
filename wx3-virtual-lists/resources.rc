@@ -38,8 +38,8 @@ END
 // RCDATA
 //
 
-COFFEE64                RCDATA                  "C:\\Users\\pna20\\dev-local\\wx1\\Resources\\coffee01.png"
-COFFEE16                BITMAP                  "C:\\Users\\pna20\\dev-local\\wx1\\Resources\\coffee04.bmp"
+COFFEE64                RCDATA                  "..\\Resources\\coffee01.png"
+COFFEE16                BITMAP                  "..\\Resources\\coffee04.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

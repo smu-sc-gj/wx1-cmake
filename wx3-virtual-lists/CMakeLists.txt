@@ -1,13 +1,15 @@
 # CMake Lists (auto xwWidgets). 
 
 # This names our executable (and for VS our project). 
-set(APP wx1) 
+set(APP wx3-virtual-lists) 
 
 #-------------------
 # Configure wxWidgets
 #-------------------
 
 include(FetchContent)
+
+
 
 # Defaults are fine .. 
 # set(wxBUILD_SAMPLES "OFF" CACHE STRING "SOME, ALL or OFF" FORCE)
@@ -16,19 +18,16 @@ set(wxBUILD_SHARED OFF CACHE STRING "Build shared or static libraries" FORCE)
 FetchContent_Declare(
     wxWidgets
     GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets
-    GIT_TAG v3.2.5
+    GIT_TAG v3.2.6
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
     OVERRIDE_FIND_PACKAGE TRUE
 )
 
-# FetchContent_MakeAvailable(wxWidgets)
- 
+
 if(NOT wxWidgets_POPULATED)
     FetchContent_MakeAvailable(wxWidgets)
-    #add_subdirectory(${wxwidgets_SOURCE_DIR} ${wxwidgets_BUILD_DIR})
 endif()
- 
 
 file(GLOB GAME_FILES *.cpp)
 
@@ -41,13 +40,16 @@ ENDIF()
 # Make sure dependent projects are compiled first!
 # add_dependencies(${APP} strings) # my target(s)
  
+add_dependencies(${APP} wx::core wx::base)
 
 # Link wxWidgets
-target_link_libraries(${APP} LINK_PUBLIC wx::net wx::core wx::base)
+target_link_libraries(${APP} LINK_PUBLIC wx::core wx::base)
 
 # Link our libraries
 # target_link_libraries (${APP} LINK_PUBLIC strings)
 
+# Resource files ...
+target_sources(${APP} PRIVATE resources.rc)
 
 install(TARGETS ${APP}
 	CONFIGURATIONS Release RelWithDebInfo Debug
@@ -58,4 +60,4 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/Resources
 	CONFIGURATIONS Release RelWithDebInfo Debug
 	DESTINATION ./) 
 
-message(STATUS "Wx1 - DONE!")
+message(STATUS "wx3-virtual-lists - DONE!")
