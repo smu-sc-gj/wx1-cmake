@@ -69,6 +69,8 @@ add_subdirectory(wx3-lists)
 
 add_subdirectory(wx3-lists-colsort) 
 
-add_subdirectory(wx3-virtual-lists) 
+if(MSVC)
+  add_subdirectory(wx3-virtual-lists) 
+endif()
 
 message(STATUS "Top Level - Cmake is Done!")
