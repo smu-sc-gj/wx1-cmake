@@ -5,6 +5,10 @@ Created a copy of Pauls test repo, looking to get a Cake working for each projec
 ## Known Issues ##
 
 * OpenGL issue may relate to graphics drivers, or perhaps some recent changes to EGL. 
+  * Notes:
+    * Doesn't work with 
+      * ```GDK_BACKEND=x11 ./wx1-opengl``` - x11 backend
+      * ```GDK_BACKEND=wayland ./wx1-opengl``` - wayland backend
 * RC files on Linux hasn't been explored.
 
 ### Projects ###

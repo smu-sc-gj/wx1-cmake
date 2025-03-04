@@ -1,3 +1,4 @@
+#define GLEW_STATIC 1
 #include <GL/glew.h>
 
 #include <wx/wx.h>
@@ -132,6 +133,7 @@ public:
             #elif defined(__WXGTK__)
                 Bind(wxEVT_CREATE, [this](wxWindowCreateEvent&) {InitGL(); });
                 //Bind(wxEVT_SHOW, [this](wxShowEvent&) {InitGL(); });
+                //Bind(wxEVT_SIZE, [this](wxSizeEvent&) {InitGL();});
             #endif // defined
 
         }
@@ -155,8 +157,6 @@ public:
                 wxMessageBox("GLEW could not be initialised", "GLEW Error", wxOK | wxICON_INFORMATION, this);
                 
                 wxMessageBox(glewGetErrorString(initStatus), "GLEW Error", wxOK | wxICON_INFORMATION, this);
-
-                GLenum initStatus = glewInit();
 
                 delete gl_context;
                 gl_context = nullptr;
@@ -336,10 +336,11 @@ public:
         auto sizer = new wxBoxSizer(wxVERTICAL);
 
         wxGLAttributes canvasAttrs;
-        canvasAttrs.PlatformDefaults().RGBA().DoubleBuffer().EndList();
+        canvasAttrs.PlatformDefaults().RGBA().DoubleBuffer().Depth(24).EndList();
 
         wxGLContextAttrs contextAttrs;
-        contextAttrs.PlatformDefaults().CompatibilityProfile().OGLVersion(3, 2).EndList();
+        contextAttrs.PlatformDefaults().CompatibilityProfile().OGLVersion(4, 1).EndList();
+        
 
         // Ideally just canvas at this level to focus on layout and top-level event handling - need to encapsulate GL init stuff away
         gl_canvas = new GLCanvas3(this, canvasAttrs, contextAttrs, triModel);
