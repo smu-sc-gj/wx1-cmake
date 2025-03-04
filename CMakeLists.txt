@@ -63,7 +63,7 @@ add_subdirectory(wx1)
 
 add_subdirectory(wx2-opengl)
 
-add_subdirectory(wx2-opengl-scribble2)
+#add_subdirectory(wx2-opengl-scribble2)
 
 add_subdirectory(wx3-lists)
 

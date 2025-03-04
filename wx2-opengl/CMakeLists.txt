@@ -3,16 +3,17 @@
 # This names our executable (and for VS our project). 
 set(APP wx1-opengl) 
 
+
 #-------------------
 # Configure wxWidgets
 #-------------------
 
 include(FetchContent)
 
-
-set(ONLY_LIBS NO CACHE BOOL "Build libs only" FORCE)
-set(glew-cmake_BUILD_STATIC YES CACHE BOOL "Build the static glew library" FORCE)
-set(glew-cmake_BUILD_SHARED NO CACHE BOOL "Build the shared glew library" FORCE)
+set(ONLY_LIBS OFF CACHE BOOL "Build libs only" FORCE)
+set(glew-cmake_BUILD_STATIC ON CACHE BOOL "Build the static glew library" FORCE)
+set(glew-cmake_BUILD_SHARED OFF CACHE BOOL "Build the shared glew library" FORCE)
+set(USE_GLU ON CACHE BOOL "Use GLU")
 
 FetchContent_Declare(
     glew
@@ -63,8 +64,9 @@ ENDIF()
 # Make sure dependent projects are compiled first!
 # add_dependencies(${APP} strings) # my target(s)
  
-add_dependencies(${APP} wx::core wx::base wx::gl)
 add_dependencies(${APP} libglew_static)
+add_dependencies(${APP} wx::core wx::base wx::gl)
+
 
 # Link glew
 # target_include_directories(${APP} PUBLIC ${GLEW_SOURCE_DIR}/include)
