@@ -338,6 +338,14 @@ public:
         wxGLAttributes canvasAttrs;
         canvasAttrs.PlatformDefaults().RGBA().DoubleBuffer().Depth(24).EndList();
 
+        // bool accepted = wxGLCanvas::IsDisplaySupported(canvasAttrs) ;
+
+        // if ( !accepted )
+        // {
+        //     wxMessageBox("Visual attributes for OpenGL are not accepted.\nThe app will exit now.",
+        //                 "Error with OpenGL", wxOK | wxICON_ERROR);
+        // }
+
         wxGLContextAttrs contextAttrs;
         contextAttrs.PlatformDefaults().CompatibilityProfile().OGLVersion(4, 1).EndList();
         
