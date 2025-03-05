@@ -134,9 +134,7 @@ public:
             #ifdef __WXMSW__
                 InitGL();
             #elif defined(__WXGTK__)
-                //Bind(wxEVT_CREATE, [this](wxWindowCreateEvent&) {InitGL(); });
-                //Bind(wxEVT_SHOW, [this](wxShowEvent&) {InitGL(); });
-                //Bind(wxEVT_SIZE, [this](wxSizeEvent&) {InitGL();});
+                Bind(wxEVT_CREATE, [this](wxWindowCreateEvent&) {InitGL(); });
             #endif // defined
 
             // Setup event handling for canvas
@@ -151,45 +149,27 @@ public:
 
     void InitGL() {
          // First call SetCurrent or GL initialization will fail.
-            while ( !IsShown() ) {};
 
-            if(IsShownOnScreen() == false){
-                wxMessageBox("Is shown on screen says false?", "GL issue", wxOK | wxICON_INFORMATION, this);
-                Show(true);
-            } 
+        SetCurrent(*gl_context);
+
+        // Initialize GLEW.
+        glewExperimental = GL_TRUE;
+        GLenum initStatus = glewInit();
+
+        if (initStatus != GLEW_OK) {
+
+            wxMessageBox("GLEW could not be initialised", "GLEW Error", wxOK | wxICON_INFORMATION, this);
             
-            if(IsShownOnScreen() == false){
-                wxMessageBox("Is shown on screen still says false?", "GL issue", wxOK | wxICON_INFORMATION, this);
-            }
+            wxMessageBox(glewGetErrorString(initStatus), "GLEW Error", wxOK | wxICON_INFORMATION, this);
 
-            if(IsShown() == false){
-                wxMessageBox("Is Shown says false?", "GL issue", wxOK | wxICON_INFORMATION, this);
-            }
+            delete gl_context;
+            gl_context = nullptr;
+        }
+        else {
 
-            SetCurrent(*gl_context);
+            InitOpenGL();
+        }
 
-            // Initialize GLEW.
-            glewExperimental = GL_TRUE;
-            GLenum initStatus = glewInit();
-
-            if (initStatus != GLEW_OK) {
-
-                wxMessageBox("GLEW could not be initialised", "GLEW Error", wxOK | wxICON_INFORMATION, this);
-                
-                wxMessageBox(glewGetErrorString(initStatus), "GLEW Error", wxOK | wxICON_INFORMATION, this);
-
-                delete gl_context;
-                gl_context = nullptr;
-            }
-            else {
-
-               
-
-                InitOpenGL();
-
-
-            }
-        glInitDone = true;
     }
 
     void OnMouseClick(wxMouseEvent& event) {
@@ -198,8 +178,6 @@ public:
     }
 
     void OnPaint(wxPaintEvent& event) {
-
-        //if(!IsShown()) return;
 
         if (!is_gl_initialised)
             return;
@@ -225,18 +203,9 @@ public:
 
     void OnSize(wxSizeEvent& event) {
 
-
         // If this window is not fully initialized, dismiss this event
         if ( !IsShownOnScreen() )
             return;
-
-        if ( !glInitDone )
-        {
-            // got a window let's init gl. 
-            InitGL();
-            //Some GPUs need an additional forced paint event
-            PostSizeEvent();
-        }
 
         if (is_gl_initialised) {
 
