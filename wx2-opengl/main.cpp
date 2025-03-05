@@ -1,5 +1,6 @@
-#define GLEW_STATIC 1
+
 #include <GL/glew.h>
+
 
 #include <wx/wx.h>
 #include <wx/valgen.h>
@@ -19,6 +20,7 @@ using namespace std;
 #if !wxUSE_GLCANVAS
 #error "OpenGL required: set wxUSE_GLCANVAS to 1 and rebuild the library"
 #endif
+
 
 
 // #pragma region DEPRICATED - GLFrame initial version declaration
@@ -101,6 +103,7 @@ private:
     wxGLContext* gl_context{ nullptr };
 
     bool is_gl_initialised{ false };
+    bool glInitDone {false};
 
     unsigned int vao{ 0 }, vbo{ 0 }, shader{ 0 };
 
@@ -131,11 +134,18 @@ public:
             #ifdef __WXMSW__
                 InitGL();
             #elif defined(__WXGTK__)
-                Bind(wxEVT_CREATE, [this](wxWindowCreateEvent&) {InitGL(); });
+                //Bind(wxEVT_CREATE, [this](wxWindowCreateEvent&) {InitGL(); });
                 //Bind(wxEVT_SHOW, [this](wxShowEvent&) {InitGL(); });
                 //Bind(wxEVT_SIZE, [this](wxSizeEvent&) {InitGL();});
             #endif // defined
 
+            // Setup event handling for canvas
+            Bind(wxEVT_PAINT, &GLCanvas3::OnPaint, this);
+            Bind(wxEVT_SIZE, &GLCanvas3::OnSize, this);
+            Bind(wxEVT_LEFT_DOWN, &GLCanvas3::OnMouseClick, this);
+
+             // Need this setup. 
+             this->model = model;
         }
     }
 
@@ -143,8 +153,18 @@ public:
          // First call SetCurrent or GL initialization will fail.
             while ( !IsShown() ) {};
 
-            if(IsShownOnScreen() == false || IsShown() == false)
-                wxMessageBox("Window not shown?", "GL issue", wxOK | wxICON_INFORMATION, this);
+            if(IsShownOnScreen() == false){
+                wxMessageBox("Is shown on screen says false?", "GL issue", wxOK | wxICON_INFORMATION, this);
+                Show(true);
+            } 
+            
+            if(IsShownOnScreen() == false){
+                wxMessageBox("Is shown on screen still says false?", "GL issue", wxOK | wxICON_INFORMATION, this);
+            }
+
+            if(IsShown() == false){
+                wxMessageBox("Is Shown says false?", "GL issue", wxOK | wxICON_INFORMATION, this);
+            }
 
             SetCurrent(*gl_context);
 
@@ -163,16 +183,13 @@ public:
             }
             else {
 
-                // All okay - setup model and OpenGL environment
-                this->model = model;
+               
 
                 InitOpenGL();
 
-                // Setup event handling for canvas
-                Bind(wxEVT_PAINT, &GLCanvas3::OnPaint, this);
-                Bind(wxEVT_SIZE, &GLCanvas3::OnSize, this);
-                Bind(wxEVT_LEFT_DOWN, &GLCanvas3::OnMouseClick, this);
+
             }
+        glInitDone = true;
     }
 
     void OnMouseClick(wxMouseEvent& event) {
@@ -182,7 +199,7 @@ public:
 
     void OnPaint(wxPaintEvent& event) {
 
-        if(!IsShown()) return;
+        //if(!IsShown()) return;
 
         if (!is_gl_initialised)
             return;
@@ -208,7 +225,18 @@ public:
 
     void OnSize(wxSizeEvent& event) {
 
-        if(!IsShown()) return;
+
+        // If this window is not fully initialized, dismiss this event
+        if ( !IsShownOnScreen() )
+            return;
+
+        if ( !glInitDone )
+        {
+            // got a window let's init gl. 
+            InitGL();
+            //Some GPUs need an additional forced paint event
+            PostSizeEvent();
+        }
 
         if (is_gl_initialised) {
 
@@ -338,13 +366,13 @@ public:
         wxGLAttributes canvasAttrs;
         canvasAttrs.PlatformDefaults().RGBA().DoubleBuffer().Depth(24).EndList();
 
-        // bool accepted = wxGLCanvas::IsDisplaySupported(canvasAttrs) ;
+        bool accepted = wxGLCanvas::IsDisplaySupported(canvasAttrs) ;
 
-        // if ( !accepted )
-        // {
-        //     wxMessageBox("Visual attributes for OpenGL are not accepted.\nThe app will exit now.",
-        //                 "Error with OpenGL", wxOK | wxICON_ERROR);
-        // }
+         if ( !accepted )
+         {
+             wxMessageBox("Visual attributes for OpenGL are not accepted.\nThe app will exit now.",
+                         "Error with OpenGL", wxOK | wxICON_ERROR);
+         }
 
         wxGLContextAttrs contextAttrs;
         contextAttrs.PlatformDefaults().CompatibilityProfile().OGLVersion(4, 1).EndList();

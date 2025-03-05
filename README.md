@@ -10,6 +10,8 @@ Created a copy of Pauls test repo, looking to get a Cake working for each projec
       * ```GDK_BACKEND=x11 ./wx1-opengl``` - x11 backend
       * ```GDK_BACKEND=wayland ./wx1-opengl``` - wayland backend
 * RC files on Linux hasn't been explored.
+* pyramid-test:
+  * Only works with the wayland backend. 
 
 ### Projects ###
 
@@ -20,3 +22,4 @@ Created a copy of Pauls test repo, looking to get a Cake working for each projec
 | w3-lists | Lists | **OK** | **OK** |
 | w3-lists-colsort | Lists with column sorting. | **OK** | **OK** |
 | w3-virtual-lists | Lists with RC files? | **BROKEN** | **OK** |
+| pyramid-test | wxWidgets glcanvas example | **BROKEN** | **OK** |

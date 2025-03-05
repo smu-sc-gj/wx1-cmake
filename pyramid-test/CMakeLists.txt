@@ -14,7 +14,7 @@ include(FetchContent)
 # Defaults are fine .. 
 set(wxBUILD_SAMPLES OFF CACHE BOOL "SOME, ALL or OFF" FORCE)
 set(wxBUILD_SHARED OFF CACHE BOOL "Build shared or static libraries" FORCE)
-set(wxUSE_GLCANVAS_EGL OFF CACHE BOOL "use EGL backend for wxGLCanvas" FORCE)
+#set(wxUSE_GLCANVAS_EGL OFF CACHE BOOL "use EGL backend for wxGLCanvas" FORCE)
 
 FetchContent_Declare(
     wxwidgets
